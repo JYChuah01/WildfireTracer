@@ -8,6 +8,15 @@ def swapElem(list, index1, index2):
     list[index1], list[index2] = list[index2], list[index1]
     return list
 
+def findLongLat(soup, cssNum):
+    longLat = soup.select_one('tr:nth-child(' + str(cssNum) + ') > td:nth-child(2)')
+
+    if(longLat == None):
+        return findLongLat(soup, cssNum - 1)
+    else:
+        return longLat.text
+
+
 URL = 'https://www.fire.ca.gov/incidents/'
 
 driver = webdriver.Firefox()
@@ -32,13 +41,15 @@ for iterator in nextPage:
         
         incident = newSoup.find(id='incident-overview')
 
+        print('Fire Name: ' + fireName)
+
         if(incident):
     
             iconData = incident.find('div', class_='icon-with-data')
             acresBurned = iconData.find('h4')
-
+            longLat = incident.select_one('tr:nth-child(4) > td:nth-child(2)').text
             percentageContained = incident.find('div', class_='icon-label')
-            
+
             if(percentageContained):
                 percentageContained = percentageContained.text.strip()
             else:
@@ -46,10 +57,9 @@ for iterator in nextPage:
             
             dataTable = incident.find('table', class_='table table-striped')
         
-            daysActive = incident.select('div.col-md-6:nth-child(1) > div:nth-child(2) > div:nth-child(1) > p:nth-child(3)')
-            county = incident.select('div.col-md-6:nth-child(1) > div:nth-child(2) > div:nth-child(2) > p:nth-child(3)')
+            daysActive = incident.select_one('div.col-md-6:nth-child(1) > div:nth-child(2) > div:nth-child(1) > p:nth-child(3)')
+            county = incident.select_one('div.col-md-6:nth-child(1) > div:nth-child(2) > div:nth-child(2) > p:nth-child(3)')
 
-            print('Fire Name: ' + fireName)    
             print('CAL FIRE Incident: Yes')
         
             dataTitle = dataTable.find_all('th')
@@ -62,25 +72,27 @@ for iterator in nextPage:
                 print(title.text.strip() + ': ' + data.text.strip())
 
                 if(title.text.strip() == 'Location Information'):
-                    print('Counties: ' + county[0].text.strip() 
+                    print('Counties: ' + county.text.strip() 
                         + '\nAcres Burned: ' + str(acresBurned.text.strip()).replace(' Acres', '')
                         + '\nPercentage Contained: ' + percentageContained)
 
                 if(title.text.strip() == 'Administrative Unit'):
                     print('Archive Year: Current Year' 
-                        + '\nStatus: ' + daysActive[0].text.strip()
+                        + '\nStatus: ' + daysActive.text.strip()
                         + '\nFinal: Unknown')
+                       
 
         else: 
             dataTable = newSoup.find('table', class_='table table-striped')
             
             dataTitle = dataTable.find_all('th')
             incidentData = dataTable.find_all('td')
-
-            print('Fire Name: ' + fireName)  
-
+            
+            longLat = findLongLat(dataTable, 13)
+          
             for title, data in zip(dataTitle, incidentData):
                 print(title.text.strip() + ': ' + data.text.strip())
+            
 
         
         print("\n")
