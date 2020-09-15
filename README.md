@@ -14,4 +14,4 @@ All the datas are retrieved from Cal Fire using web scraping
   * requests ([PyPi](https://pypi.org/project/requests/))
   * BeautifulSoup ([PyPi](https://pypi.org/project/beautifulsoup4/))
   * selenium ([PyPi](https://pypi.org/project/selenium/))
-  * folium ([PyPi](https://pypi.org/project/folium/))
+  * gmaps ([PyPi](https://pypi.org/project/gmaps/))
