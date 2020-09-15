@@ -154,7 +154,7 @@ def getFireData(fireurl):
 
     return formattedList
 
-gmaps.configure(api_key='AIzaSyBWdi-mJlmNEbF3dC1W-j_-eSD8DMDxGP8')
+gmaps.configure(api_key=)
 mapCenter = (37.643756, -122.257603)
 map = gmaps.figure(zoom_level = 5, center = mapCenter, map_type = 'TERRAIN')
 
