@@ -5,7 +5,7 @@ All the datas are retrieved from Cal Fire using web scraping
 
 ### Features:
  * Display active wildfires and all the relevant information
- * Plots the wildfire location and the active perimeter on the map **(WIP)**
+ * Plot all the wildfire location
  
  ### Credits
   * CalFire for providing all the wildfire datas
