@@ -1,4 +1,6 @@
-import requests, gmaps
+#A program that uses web scraping to retrieve active fire incidents from Calfire webpage.
+
+import requests, gmaps, sys
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from multiprocessing.dummy import Pool
@@ -148,7 +150,7 @@ def getFireData(fireurl):
 
     return formattedList
 
-gmaps.configure(api_key='')
+gmaps.configure(api_key='AIzaSyAQz4zCab-HfALvCr9h8P8MQ12O7J7GqzM')
 mapCenter = (37.643756, -122.257603)
 map = gmaps.figure(zoom_level = 5, center = mapCenter, map_type = 'TERRAIN')
 
@@ -156,18 +158,23 @@ URL = 'https://www.fire.ca.gov/incidents/'
 
 driver = webdriver.Firefox()
 driver.get(URL)
-nextPage = driver.find_elements_by_xpath('/html/body/div[1]/main/div/div[4]/div/nav/ul/li')
+fireSource = driver.find_elements_by_xpath('/html/body/div[1]/main/div/div[4]/div/nav/ul/li')
+#fireSource is invalid when there is only single page as there is no page navigation bar available
 
 fireLink = []
 
-for iterator in nextPage:
-    iterator.click()
-
+for iterator in fireSource:
+    if len(fireSource) > 1: #Temporary workaround for single paged active fire incidents
+        iterator.click()
+   
     newPage = driver.page_source
     soup = BeautifulSoup(newPage, 'lxml')
 
     fireList = soup.find('div', class_='responsive-table responsive-table--collapse')
     fireLink += fireList.find_all('a', href=True)
+
+    if len(fireLink) == 0:
+        sys.exit("No active fire found.\n\n")
 
 driver.quit()
 
@@ -247,3 +254,4 @@ markers = gmaps.marker_layer(coordinateList, info_box_content=formattedInfo)
 map.add_layer(markers)
 embed_minimal_html('fireMap.html', views=[map])
 
+print("Executed successfully.")
