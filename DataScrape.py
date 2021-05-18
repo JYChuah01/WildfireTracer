@@ -40,11 +40,6 @@ def formatListA(list1, list2, county, acres, percent, status):
 
     del list1[4:]
     del list2[4:]
-
-    # list1.insert(3, 'Status')
-    # list1.insert(3, 'Percentage Contained')
-    # list1.insert(3, 'Acres Burned')
-    # list1.insert(3, 'Counties')
     
     list2.insert(3, status)
     list2.insert(3, percent)
@@ -52,39 +47,33 @@ def formatListA(list1, list2, county, acres, percent, status):
     list2.insert(3, county)
 
     list1.clear()
-    #list2.clear()
 
     return list2
 
 def formatListB(list1, list2):
     newList = []
+    
     if(list1[4] != 'Acres Burned'):
         del list1[4:]
         del list2[4:]
+
     else:
         del list1[8:]
         del list2[8:]
 
         if(list1[6] == 'Cause'):
-            #list1.pop(6)
             list2.pop(6)
+
         else:
-            #list1.pop(7)
             list2.pop(7)
 
     if(len(list1) < 5 ):
-        # list1.append('Acres Burned')
-        # list1.append('Percentage Contained')
-        # list1.append('Status')
-        # list1.append('Administrative Unit')
- 
         list2.append('Unknown')
         list2.append('Unknown')
         list2.append('Active')
         list2.append('Unknown')
-    else:
-        #list1.insert(6, 'Status')
-        
+
+    else:        
         list2.insert(6, 'Active')
     
    
@@ -150,7 +139,7 @@ def getFireData(fireurl):
 
     return formattedList
 
-gmaps.configure(api_key='AIzaSyAQz4zCab-HfALvCr9h8P8MQ12O7J7GqzM')
+gmaps.configure(api_key='')
 mapCenter = (37.643756, -122.257603)
 map = gmaps.figure(zoom_level = 5, center = mapCenter, map_type = 'TERRAIN')
 
