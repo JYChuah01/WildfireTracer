@@ -1,4 +1,4 @@
-# Wildfire_Tracer
+# WildfireTracer
 A web scrapping and map plotter project written with Python
 
 All the datas are retrieved from Cal Fire using web scraping
